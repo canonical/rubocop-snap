@@ -1,0 +1,57 @@
+name: rubocop
+adopt-info: rubocop
+base: core22
+grade: stable
+confinement: strict
+architectures:
+  - build-on: [amd64]
+  - build-on: [arm64]
+parts:
+  rubocop:
+    source: https://github.com/rubocop/rubocop
+    source-type: git
+    plugin: nil
+    override-build: |
+      # Build and install
+      /usr/bin/gem build *.gemspec
+      /usr/bin/gem install *.gem --env-shebang --no-document
+
+      # Set the version
+      version="$(rubocop -v)"
+      craftctl set version="$version"
+
+      # Move the Gems
+      mkdir -p /usr/lib/ruby/gems/3.0.0
+      cp -R /usr/lib/ruby/gems/3.0.0 $SNAPCRAFT_PART_INSTALL/usr/lib/ruby/gems/3.0.0
+    build-packages:
+      - ruby3.0
+      - gcc
+      - libc6-dev
+      - make
+      - ruby3.0-dev
+    stage-packages:
+      - ruby3.0
+      - rubygems
+      - libruby3.0
+
+apps:
+  rubocop:
+    environment:
+      RUBYLIB: "${SNAP}/lib/ruby/site_ruby/3.0.0:${SNAP}/lib/ruby/site_ruby/3.0.0/arm64-darwin22:${SNAP}/lib/ruby/site_ruby:${SNAP}/lib/ruby/vendor_ruby/3.0.0:${SNAP}/lib/ruby/vendor_ruby/3.0.0/arm64-darwin22:${SNAP}/lib/ruby/vendor_ruby:${SNAP}/lib/ruby/3.0.0:${SNAP}/lib/ruby/3.0.0/arm64-darwin2"
+      GEM_HOME: $SNAP/usr/lib/ruby/gems/3.0.0/gems
+      GEM_PATH: $SNAP/usr/lib/ruby/gems/3.0.0/gems
+    command: usr/bin/ruby $SNAP/usr/lib/ruby/gems/3.0.0/3.0.0/bin/rubocop
+title: Rubocop
+summary: A Ruby linter and formatter
+description: |
+  Rubocop is a Ruby linter and formatter. It has a series of checks for aspects
+  such as style, code metrics, and naming. Rubocop also verifies for security
+  concerns: unsafe evaluation, YAML deserializations, and many more. The
+  formatter capability can be used to fix many of the issues automatically.
+icon: images/icon.png
+issues:
+  - https://github.com/iosifache/rubocop-snap/issues
+  - https://github.com/rubocop/rubocop
+license: MIT
+website: https://github.com/iosifache/rubocop-snap
+
