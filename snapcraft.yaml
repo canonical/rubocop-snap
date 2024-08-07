@@ -20,9 +20,10 @@ parts:
       version="$(rubocop -v)"
       craftctl set version="$version"
 
-      # Move the Gems
-      mkdir -p /usr/lib/ruby/gems/3.0.0
-      cp -R /usr/lib/ruby/gems/3.0.0 $SNAPCRAFT_PART_INSTALL/usr/lib/ruby/gems/3.0.0
+      # Move files
+      mkdir -p "$SNAPCRAFT_PART_INSTALL/var/lib/gems/3.0.0/"
+      cp -R /var/lib/gems/3.0.0/* "$CRAFT_PART_INSTALL/var/lib/gems/3.0.0/"
+      cp /usr/local/bin/rubocop "$SNAPCRAFT_PART_INSTALL/usr/bin/"
     build-packages:
       - ruby3.0
       - gcc
@@ -36,11 +37,13 @@ parts:
 
 apps:
   rubocop:
-    environment:
-      RUBYLIB: "${SNAP}/lib/ruby/site_ruby/3.0.0:${SNAP}/lib/ruby/site_ruby/3.0.0/arm64-darwin22:${SNAP}/lib/ruby/site_ruby:${SNAP}/lib/ruby/vendor_ruby/3.0.0:${SNAP}/lib/ruby/vendor_ruby/3.0.0/arm64-darwin22:${SNAP}/lib/ruby/vendor_ruby:${SNAP}/lib/ruby/3.0.0:${SNAP}/lib/ruby/3.0.0/arm64-darwin2"
-      GEM_HOME: $SNAP/usr/lib/ruby/gems/3.0.0/gems
-      GEM_PATH: $SNAP/usr/lib/ruby/gems/3.0.0/gems
-    command: usr/bin/ruby $SNAP/usr/lib/ruby/gems/3.0.0/3.0.0/bin/rubocop
+    environment: &appenv
+      HOME: $SNAP_REAL_HOME
+      # ruby env variables
+      RUBYLIB: "${SNAP}/usr/lib/ruby/vendor_ruby/3.0.0:${SNAP}/usr/lib/x86_64-linux-gnu/ruby/vendor_ruby/3.0.0:${SNAP}/usr/lib/ruby/vendor_ruby:${SNAP}/usr/lib/ruby/3.0.0:${SNAP}/usr/lib/x86_64-linux-gnu/ruby/3.0.0"
+      GEM_HOME: "${SNAP}/var/lib/gems/3.0.0"
+      GEM_PATH: "${SNAP}/usr/lib/ruby/gems/3.0.0:${SNAP}/usr/share/rubygems-integration/all:${SNAP}/var/lib/gems/3.0.0"
+    command: usr/bin/ruby $SNAP/usr/bin/rubocop
 title: Rubocop
 summary: A Ruby linter and formatter
 description: |
@@ -50,8 +53,8 @@ description: |
   formatter capability can be used to fix many of the issues automatically.
 icon: images/icon.png
 issues:
-  - https://github.com/iosifache/rubocop-snap/issues
+  - https://github.com/canonical/rubocop-snap/issues
   - https://github.com/rubocop/rubocop
 license: MIT
-website: https://github.com/iosifache/rubocop-snap
+website: https://github.com/canonical/rubocop-snap
 
