@@ -13,8 +13,8 @@
         <img src="https://img.shields.io/github/v/release/google/rubocop?label=RuboCop%20on%20GitHub%20Releases&color=1c8223" height="17" alt="PyPI's Version">
     </a>
     &nbsp; &nbsp;
-    <a href="https://github.com/iosifache/rubocop-snap/actions/workflows/test-build.yaml">
-        <img src="https://img.shields.io/github/actions/workflow/status/iosifache/rubocop-snap/test-build.yaml?label=Build%20Status&color=1c8223" height="17" alt="GitHub Build Workflow Status">
+    <a href="https://github.com/canonical/rubocop-snap/actions/workflows/test-build.yaml">
+        <img src="https://img.shields.io/github/actions/workflow/status/canonical/rubocop-snap/test-build.yaml?label=Build%20Status&color=1c8223" height="17" alt="GitHub Build Workflow Status">
     </a>
 </p>
 
@@ -39,7 +39,7 @@ The formatter capability can be used to fix many of the issues automatically.
 
 # Local Build
 
-1. Clone this repository: `git clone https://github.com/iosifache/rubocop-snap`
+1. Clone this repository: `git clone https://github.com/canonical/rubocop-snap`
 2. Move into the cloned repository: `cd rubocop-snap`
 3. Install Snapcraft: `sudo snap install snapcraft --classic`
 4. Build the snap: `snapcraft --verbose`
